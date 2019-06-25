@@ -19,6 +19,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', (req, res) => {
+    res.send("its working")
     db.select('*').from('games').orderBy('id').then(data => {
         res.json(data)
     })
