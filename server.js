@@ -70,7 +70,7 @@ app.post('/change-waiting', (req, res) => {
     })
 })
 
-app.listen(3000, () => {
-    console.log("Your app is live on PORT 3000");
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`Your app is live on PORT ${process.env.PORT}`);
 })
 
