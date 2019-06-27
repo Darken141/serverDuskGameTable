@@ -1,6 +1,6 @@
 const express = require("express")
 const bodyParser = require("body-parser");
-const cors =require('cors');
+const cors = require('cors');
 const knex = require('knex');
 
 const db = knex({
@@ -22,9 +22,10 @@ app.get('/', (req, res) => {
     })
 });
 
+
 app.post('/change-game', (req,res) => {
     const { id, gamerunning} = req.body;
-
+    
     db.select('*').from('games').where('id', '=', id)
     .update({
         gamerunning: gamerunning
@@ -37,6 +38,35 @@ app.post('/change-game', (req,res) => {
     })
 })
 
+app.post('/change-game-name', (req, res) =>{
+    const { id, name } = req.body;
+
+    db.select('*').from('games').where('id', '=', id)
+    .update({
+        name: name
+    }).then(data => {
+        if(data){
+            res.json({status: 'ok'})
+        }
+    }).catch(err => {
+        res.status(400).json('unable to change game name');
+    })
+})
+
+app.post('/change-buyin', (req, res) => {
+    const { id, buyin } = req.body;
+
+    db.select('*').from('games').where('id', '=', id)
+    .update({
+        buyin: buyin
+    }).then(data => {
+        if(data){
+            res.json({status: 'ok'})
+        }
+    }).catch(err => {
+        res.status(400).json('unable to change buyin');
+    })
+})
 
 app.post('/change-seats', (req, res) => {
     const { id, seatsavailable} = req.body;
