@@ -11,13 +11,24 @@ const db = knex({
     }   
 })
 
+// const db = knex({
+//     client: 'pg',
+//     connection: {
+//       host : '127.0.0.1',
+//       user : 'postgres',
+//       password : 'D63479614',
+//       database : 'dusk-game-table'
+//     }   
+// })
+
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
 
 app.get('/', (req, res) => {
-    db.select('*').from('games').orderBy('id').then(data => {
+    db.select('*').from('games').orderBy('id')
+    .then(data => {
         res.json(data)
     })
 });
@@ -32,7 +43,7 @@ app.post('/change-game', (req,res) => {
     }).then(data => {
         if(data){
             res.json({ status: 'ok' })
-        }
+           }
     }).catch(err => {
         res.status(400).json('unable to change number of running games');
     })
@@ -95,6 +106,28 @@ app.post('/change-waiting', (req, res) => {
         }
     }).catch(err => {
         res.status(400).json('unable to change waiting list');
+    })
+})
+
+app.get('/get-highhand', (req, res) => {
+    db.select('*').from('highhand')
+    .then(data => {
+        res.json(data);
+    })
+})
+
+app.post('/change-highhand', (req, res) => {
+    const { id, highhand} = req.body;
+
+    db.select('*').from('highhand').where('id', '=', id)
+    .update({
+        name: highhand
+    }).then(data => {
+        if(data){
+            res.json({status: 'ok'})
+        }
+    }).catch(err => {
+        res.status(400).json('unable to change high hand')
     })
 })
 
